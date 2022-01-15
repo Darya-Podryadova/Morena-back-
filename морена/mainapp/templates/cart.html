@@ -1,0 +1,69 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+
+<section class="Cart" id="Cart">
+		<h1 class="heading"><span>Ваша</span> Корзина </h1>
+		<div class="row">
+			<div class="shopping-cart">
+
+      <div class="title">
+        Корзина
+        <div class="Fullprice">Стоимость: ${{cart.final_price}}</div>
+        <div class="Fullprice">Количество: {{cart.total_product}}</div>
+        <a href="{% url 'base' %}" class="">Заказать</a>
+      </div>
+
+{%for i in cart.products.all %}
+      <div class="item">
+        <div class="buttons">
+          <a href="{% url 'delete_from_cart' ct_model=i.content_object.get_model_name slug=i.content_object.slug %}"><span class="delete-btn"><ion-icon name="trash-outline"></ion-icon></span></a>
+        </div>
+
+        <div class="image">
+          <img src="{{i.content_object.image.url}}" alt="" />
+        </div>
+
+        <div class="description">
+          <span>{{i.content_object.title}}</span>
+          <span>{{i.content_object.color}}</span>
+          <span>{{i.content_object.size}}</span>
+        </div>
+
+        <div class="quantity">
+          <form action="{% url 'change_qty' ct_model=i.content_object.get_model_name slug=i.content_object.slug%}" method="post" >
+							 {% csrf_token %}
+							<span>Количество(шт): </span>
+							 <input  type="number"  name="qty" style="
+border:1px solid black;
+width: 80px;
+height:30px;
+font-size: 14px;
+font-weight: 1000;
+font-family:Britannic_Bold;
+border-radius: 10px;
+" value="{{i.qty}}" min="1"><input type="submit" style="
+border:1px solid black;
+width: 50px;
+height:30px;
+font-size: 14px;
+font-weight: 1000;
+font-family:Britannic_Bold;
+border-radius: 10px;" value="ok" >
+						 </form>
+        </div>
+        <div class="total-price">${{i.content_object.price}}</div>
+      </div>{%endfor %}
+
+
+
+
+    </div>
+
+
+		</div>
+	</section>
+
+
+{%endblock content%}
